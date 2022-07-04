@@ -16,7 +16,7 @@ export default function Saida(){
         event.preventDefault()
         console.log(transacao)
         console.log(userData.token)
-        const promise = axios.post('http://localhost:5000/create-trans', transacao, {
+        const promise = axios.post('https://git.heroku.com/api-mywallet-pink.git/create-trans', transacao, {
             headers:{Authorization: `Bearer ${userData.token}`}})
         
         promise.then(response => {

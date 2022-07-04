@@ -14,7 +14,7 @@ export default function Home(){
     render++
 
     useEffect(() => { 
-        const promise = axios.get('http://localhost:5000/transacoes', {
+        const promise = axios.get('https://git.heroku.com/api-mywallet-pink.git/transacoes', {
         headers:{Authorization: `Bearer ${userData.token}`}})
             
         promise.then(response => {
