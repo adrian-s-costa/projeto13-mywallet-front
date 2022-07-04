@@ -8,7 +8,6 @@ import axios from "axios";
 
 export default function SignUp(){
 
-    
     const {loginData, setLoginData, userData, setUserData, registerData, setRegisterData} = useContext(UserContext);
     const navigate = useNavigate();
 
@@ -17,14 +16,7 @@ export default function SignUp(){
         const promise = axios.post('http://localhost:5000/sign-up', registerData)
         console.log(registerData);
         promise.then(response=>{
-            const promise = axios.post('http://localhost:5000/', loginData)
-            promise.then(response=>{
-                setUserData(registerData)
-                navigate('/home')
-            })
-            promise.catch(response=>{
-                console.log(loginData)
-            })
+            console.log("Sucesso")
         })
     }
 
