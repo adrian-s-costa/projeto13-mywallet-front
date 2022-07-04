@@ -8,6 +8,7 @@ import axios from "axios";
 
 export default function SignUp(){
 
+    
     const {loginData, setLoginData, userData, setUserData, registerData, setRegisterData} = useContext(UserContext);
     const navigate = useNavigate();
 
@@ -16,7 +17,7 @@ export default function SignUp(){
         const promise = axios.post('https://api-mywallet-pink.herokuapp.com/sign-up', registerData)
         console.log(registerData);
         promise.then(response=>{
-            console.log("Sucesso")
+            
         })
     }
 
