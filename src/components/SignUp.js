@@ -13,7 +13,7 @@ export default function SignUp(){
 
     function setDados(event){
         event.preventDefault();
-        const promise = axios.post('https://git.heroku.com/api-mywallet-pink.git/sign-up', registerData)
+        const promise = axios.post('https://api-mywallet-pink.herokuapp.com/sign-up', registerData)
         console.log(registerData);
         promise.then(response=>{
             console.log("Sucesso")
