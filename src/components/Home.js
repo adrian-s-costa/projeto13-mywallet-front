@@ -1,11 +1,13 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import UserContext from "../contexts/UserContext";
 import { useContext } from 'react';
+import Transacao from "./Transacao";
 
 export default function Home(){
 
-    const {loginData, setLoginData, userData, setUserData, registerData, setRegisterData} = useContext(UserContext);
+    const {loginData, setLoginData, userData, setUserData, registerData, setRegisterData, tipo, setTipo} = useContext(UserContext);
+    const navigate = useNavigate();
 
     return (
         <HomeMain>
@@ -16,25 +18,26 @@ export default function Home(){
                 </span>
             </div>
             <div className="transacoes">
-
+                <Transacao/>
+                <div className="saldoDiv">
+                    <h5 className="saldoTexto">SALDO</h5>
+                    <h5 className="valor saldo">2999,87</h5>
+                </div>
             </div>
             <div className="btns">
-                <Link to={"/entrada"} style={{textDecoration:'none'}}>
-                    <button>
-                        <span>
-                            <ion-icon name="add-circle-outline"></ion-icon>
-                        </span>
-                        <p>Nova entrada</p>
-                    </button>
-                </Link>
-                <Link to={"/saida"} style={{textDecoration:'none'}}>
-                    <button>
-                        <span>
-                            <ion-icon name="remove-circle-outline"></ion-icon>
-                        </span>
-                        <p>Nova saida</p>
-                    </button>
-                </Link>
+                <button onClick={()=>(navigate("/entrada"), setTipo("entrada"))}>
+                    <span>
+                        <ion-icon name="add-circle-outline"></ion-icon>
+                    </span>
+                    <p>Nova entrada</p>
+                </button>
+        
+                <button onClick={()=>(navigate("/saida"), setTipo("saida"))}>
+                    <span>
+                        <ion-icon name="remove-circle-outline"></ion-icon>
+                    </span>
+                    <p>Nova saida</p>
+                </button>
             </div>
         </HomeMain>
     )
@@ -71,6 +74,17 @@ const HomeMain = styled.main`
         border-radius: 5px;
         width: 90vw;
         height: 70vh;
+        display: flex;
+        flex-direction: column;
+        padding: 23px 10px 11px 12px;
+        position: relative;
+    }
+
+    .tranEspecifica{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 25px;
     }
 
     span{
@@ -111,5 +125,61 @@ const HomeMain = styled.main`
     p{
         width: 64px;
         height: 40px;
+    }
+
+    .saldoTexto{
+        font-family: 'Raleway';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 17px;
+        line-height: 20px;
+        color: #000000;
+    }
+
+    .hora{
+        font-family: 'Raleway';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 19px;
+        color: #C6C6C6;
+    }
+
+    .valor{
+        font-family: 'Raleway';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 19px;
+        color: #C70000;
+    }
+
+    .saldo{
+        margin-right: 26px;
+    }
+
+    .saldoDiv{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        position: absolute;
+        bottom: 10px;
+    }
+
+    .saida{
+        color: #C70000 !important;
+    }
+
+    .entrada{
+        color: #03AC00 !important;
+    }
+
+    .nome{
+        font-family: 'Raleway';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 19px;
+        color: #000000;
     }
 `

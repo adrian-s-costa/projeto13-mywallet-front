@@ -13,7 +13,6 @@ export default function Login(){
 
     function setDados(event){
         event.preventDefault()
-        console.log(loginData)
         const promise = axios.post('http://localhost:5000/', loginData)
         
         promise.then(response => {

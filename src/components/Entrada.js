@@ -1,19 +1,45 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Input from "./layout/Input";
 import Button from "./layout/Button";
+import UserContext from "../contexts/UserContext";
+import { useContext } from 'react';
+import { useState } from 'react';
+import axios from "axios";
 
 export default function Entrada(){
+    const {loginData, setLoginData, userData, setUserData, registerData, setRegisterData, tipo, setTipo} = useContext(UserContext);
+    const [transacao, setTransacao] = useState({valor:"", descricao:"", tipo:""});
+    const navigate = useNavigate();
+
+
+    function setDados(event){
+        event.preventDefault()
+        console.log(transacao)
+        console.log(userData.token)
+        const promise = axios.post('http://localhost:5000/create-trans', transacao, {
+            headers:{Authorization: `Bearer ${userData.token}`}})
+        
+        promise.then(response => {
+            console.log(response.data);
+        })
+        promise.catch(response=>{
+            alert('deu ruim');
+        })
+    }
+
     return (
         <HomeMain>
-            <div className="topo">
-                <h2>Nova entrada</h2>
-            </div>
-            <div className="inputs">
-                <Input placeholder={"Valor"}/>
-                <Input placeholder={"Descrição"}/>
-            </div>
-            <Button placeholder={"Salvar Entrada"}/>
+            <form onSubmit={setDados}>
+                <div className="topo">
+                    <h2>Nova entrada</h2>
+                </div>
+                <div className="inputs">
+                <Input type={'text'} placeholder={"Valor"} set={(e)=>setTransacao({...transacao, valor: e.target.value})} value={transacao.valor} />
+                <Input type={'text'} placeholder={"Descrição"} set={(e)=>setTransacao({...transacao, descricao: e.target.value, tipo: tipo})} value={transacao.descricao} />
+                </div>
+                <Button placeholder={"Salvar Entrada"}/>
+            </form>
         </HomeMain>
     )
 }
