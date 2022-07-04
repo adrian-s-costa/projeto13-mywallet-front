@@ -1,23 +1,47 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Input from "./layout/Input";
 import Button from "./layout/Button";
+import UserContext from "../contexts/UserContext";
+import { useContext } from 'react';
+import { useState } from 'react';
+import axios from "axios";
 
 export default function Saida(){
+    const {loginData, setLoginData, userData, setUserData, registerData, setRegisterData, tipo, setTipo, transacoesData, setTransacoesData} = useContext(UserContext);
+    const [transacao, setTransacao] = useState({valor:"", descricao:"", tipo:""});
+    const navigate = useNavigate();
+
+    function setDados(event){
+        event.preventDefault()
+        console.log(transacao)
+        console.log(userData.token)
+        const promise = axios.post('http://localhost:5000/create-trans', transacao, {
+            headers:{Authorization: `Bearer ${userData.token}`}})
+        
+        promise.then(response => {
+            navigate("/home");
+        })
+        promise.catch(response=>{
+            alert('O envio de dados falhou miseravelmente');
+        })
+    }
+
     return (
         <HomeMain>
-            <div className="topo">
-                <h2>Nova saida</h2>
-            </div>
-            <div className="inputs">
-                <Input placeholder={"Valor"}/>
-                <Input placeholder={"Descrição"}/>
-            </div>
-            <Button placeholder={"Salvar Saida"}/>
+            <form onSubmit={setDados}>
+                <div className="topo">
+                    <h2>Nova saída</h2>
+                </div>
+                <div className="inputs">
+                <Input type={'text'} placeholder={"Valor"} set={(e)=>setTransacao({...transacao, valor: e.target.value})} value={transacao.valor} />
+                <Input type={'text'} placeholder={"Descrição"} set={(e)=>setTransacao({...transacao, descricao: e.target.value, tipo: tipo})} value={transacao.descricao} />
+                </div>
+                <Button placeholder={"Salvar Saida"}/>
+            </form>
         </HomeMain>
     )
 }
-
 const HomeMain = styled.main`
     display: flex;
     width: 100%;
@@ -41,7 +65,7 @@ const HomeMain = styled.main`
     }
 
     .topo{
-        padding: 25px 24px 40px 24px;
+        padding: 25px 24px 40px 0px;
         width: 100%;
         display: flex;
         color: #FFFFFF;

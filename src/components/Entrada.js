@@ -8,10 +8,9 @@ import { useState } from 'react';
 import axios from "axios";
 
 export default function Entrada(){
-    const {loginData, setLoginData, userData, setUserData, registerData, setRegisterData, tipo, setTipo} = useContext(UserContext);
+    const {loginData, setLoginData, userData, setUserData, registerData, setRegisterData, tipo, setTipo, transacoesData, setTransacoesData} = useContext(UserContext);
     const [transacao, setTransacao] = useState({valor:"", descricao:"", tipo:""});
     const navigate = useNavigate();
-
 
     function setDados(event){
         event.preventDefault()
@@ -21,10 +20,10 @@ export default function Entrada(){
             headers:{Authorization: `Bearer ${userData.token}`}})
         
         promise.then(response => {
-            console.log(response.data);
+            navigate("/home");
         })
         promise.catch(response=>{
-            alert('deu ruim');
+            alert('O envio de dados falhou miseravelmente');
         })
     }
 
@@ -67,7 +66,7 @@ const HomeMain = styled.main`
     }
 
     .topo{
-        padding: 25px 24px 40px 24px;
+        padding: 25px 24px 40px 0px;
         width: 100%;
         display: flex;
         color: #FFFFFF;

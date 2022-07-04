@@ -1,15 +1,36 @@
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import UserContext from "../contexts/UserContext";
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import Transacao from "./Transacao";
+import axios from "axios";
 
 export default function Home(){
 
-    const {loginData, setLoginData, userData, setUserData, registerData, setRegisterData, tipo, setTipo} = useContext(UserContext);
+    let render = 0
+    const {loginData, setLoginData, userData, setUserData, registerData, setRegisterData, tipo, setTipo, transacoesData, setTransacoesData} = useContext(UserContext);
     const navigate = useNavigate();
+    
+    render++
 
+    useEffect(() => { 
+        const promise = axios.get('http://localhost:5000/transacoes', {
+        headers:{Authorization: `Bearer ${userData.token}`}})
+            
+        promise.then(response => {
+            console.log(response.data[0].transacoes)
+            setTransacoesData(response.data[0].transacoes.reverse());
+            navigate("/home");
+        })
+        promise.catch(response=>{
+            alert('O envio de dados falhou miseravelmente');
+        })
+    }, [render])
+
+    render++
+    
     return (
+    <>
         <HomeMain>
             <div className="topo">
                 <h2>Ola, {userData.name}</h2>
@@ -18,7 +39,7 @@ export default function Home(){
                 </span>
             </div>
             <div className="transacoes">
-                <Transacao/>
+            {transacoesData.length === 0 ? <h1>carregando..</h1> : <Transacao/>}
                 <div className="saldoDiv">
                     <h5 className="saldoTexto">SALDO</h5>
                     <h5 className="valor saldo">2999,87</h5>
@@ -40,6 +61,7 @@ export default function Home(){
                 </button>
             </div>
         </HomeMain>
+    </>
     )
 }
 
@@ -78,6 +100,7 @@ const HomeMain = styled.main`
         flex-direction: column;
         padding: 23px 10px 11px 12px;
         position: relative;
+        overflow-y: scroll;
     }
 
     .tranEspecifica{
@@ -134,6 +157,7 @@ const HomeMain = styled.main`
         font-size: 17px;
         line-height: 20px;
         color: #000000;
+        
     }
 
     .hora{
@@ -154,16 +178,15 @@ const HomeMain = styled.main`
         color: #C70000;
     }
 
-    .saldo{
-        margin-right: 26px;
-    }
-
     .saldoDiv{
-        width: 100%;
+        width: 84vw;
         display: flex;
         justify-content: space-between;
-        position: absolute;
-        bottom: 10px;
+        align-items: center;
+        position: fixed;
+        bottom: 21.2vh;
+        background-color: #FFFFFF;
+        height: 4vh;
     }
 
     .saida{

@@ -14,8 +14,9 @@ export default function App (){
     const [userData, setUserData] = useState({});
     const [registerData, setRegisterData] = useState({name:'', email:'', password:'', password2:''})
     const [tipo, setTipo] = useState("")
+    const [transacoesData, setTransacoesData] = useState([])
 
-    const contextValue = { loginData, setLoginData, userData, setUserData, registerData, setRegisterData, tipo, setTipo}
+    const contextValue = { loginData, setLoginData, userData, setUserData, registerData, setRegisterData, tipo, setTipo, transacoesData, setTransacoesData}
 
     return(
         <BrowserRouter>
